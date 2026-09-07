@@ -1,2 +1,69 @@
 # ziminfra
-An AI-powered "nervous system" for Zimbabwean roads and urban infrastructure.
+
+<a href="https://roadmap.sh/projects/task-tracker" target="_blank">
+<img src="preview.gif" alt="Preview">
+</a>
+
+## 📖 Description
+
+**ziminfra** An AI-powered "nervous system" for Zimbabwean roads and urban infrastructure.
+
+---
+
+## ✨ Features
+
+- **Add a Task** → Create tasks with descriptions. Each task gets a unique ID and a default `todo` status.
+- **Update a Task** → Modify the description or status of a task.
+- **Mark as In-Progress** → Quickly change a task’s status to `in-progress`.
+- **Mark as Done** → Quickly change a task’s status to `done`.
+- **Delete a Task** → Remove tasks by their ID.
+- **List Tasks** → Display all tasks or filter them by:
+  - **status**: `todo`, `in-progress`, `done`, or `all`
+  - **date**: filter by creation date with operators `<`, `>`, `=`
+
+## 🗂 Project Structure
+
+- **taskly.py** → Core CLI implementation
+
+  - `main()` → Entry point, parses CLI arguments and runs commands.
+  - `load_database(path)` → Loads tasks from a JSON file.
+  - `save_database(database, path)` → Saves tasks to JSON.
+  - `add_task(database, description)` → Adds a new task.
+  - `update_task(database, id, description?, status?)` → Updates description or status.
+  - `mark_in_progress_task(database, id)` → Marks a task as _in-progress_.
+  - `mark_done_task(database, id)` → Marks a task as _done_.
+  - `delete_task(database, id)` → Deletes a task.
+  - `list_task(database, status?, date?)` → Lists tasks with optional filters.
+
+- **test_taskly.py** → Unit tests for all features using `pytest`.
+
+- **pyproject.toml** → Project metadata, dependencies, and packaging config.
+
+## ⚡ Installation
+
+You can install Taskly directly from GitHub:
+
+```bash
+pip install git+https://github.com/brkahmed/taskly.git
+```
+
+## 🚀 Usage
+
+```bash
+$ taskly add [-h] description
+
+$ taskly update [-h] [-d description] [-s {done,in-progress,todo}] id
+
+$ taskly mark-done [-h] id
+
+$ taskly mark-in-progress [-h] id
+
+$ taskly delete [-h] id
+
+$ taskly list [-h] [-s {done,in-progress,todo,all}] [-d DATE]
+```
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+You are free to use, modify, and distribute it.
