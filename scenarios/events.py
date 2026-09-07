@@ -1,7 +1,7 @@
 """
 Infrastructure event engine.
 
-NOT a sensor -- it's a small rules layer that looks at the current
+This is NOT a sensor -- it's a small rules layer that looks at the current
 sensor readings for a road and decides whether an "infrastructure event"
 should be reported (blocked drain, heavy rainfall, increasing vibration,
 road deterioration). It also supports manually forcing a scenario on, which
@@ -91,4 +91,14 @@ def detect_events(state: RoadEventState, readings: dict) -> list[dict]:
             "triggered_by": "vibration",
         })
 
-    return events
+    # De-duplicate: the same event_type can be raised both by a scripted
+    # override and by auto-detection in the same tick. Keep one entry per
+    # event_type, preferring the highest severity.
+    severity_rank = {"low": 0, "medium": 1, "high": 2}
+    deduped: dict[str, dict] = {}
+    for event in events:
+        existing = deduped.get(event["event_type"])
+        if existing is None or severity_rank[event["severity"]] > severity_rank[existing["severity"]]:
+            deduped[event["event_type"]] = event
+
+    return list(deduped.values())
